@@ -1,2 +1,2 @@
 # Video-Upload
-A Video Upload website project suing MEAN Stack
+A Video Upload website project using MEAN Stack

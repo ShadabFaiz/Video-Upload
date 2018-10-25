@@ -1,0 +1,21 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"allowJs": false,
+		"lib": ["es5", "es6", "es2017", "dom"],
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"outDir": "./build",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"sourceMap": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"noEmit": false,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitThis": true,
+		"pretty": true,
+		"removeComments": true
+	}
+}
