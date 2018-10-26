@@ -8,6 +8,7 @@ import * as expressValidator from 'express-validator';
 import { config } from '../config';
 import { DatabaseManager } from './util/database/DatabaseManager';
 import * as multer from 'multer';
+import { VideoRouer } from './routes/video/VideoRouter';
 // import { AuthenticationCtrl } from './controller/authentication/AuthenticationCtrl';
 
 let extractJWT = passportjwt.ExtractJwt;
@@ -108,6 +109,7 @@ class App {
     let router = express.Router();
     // this.express.use('/api/v1/authenticate', AuthenticateRouter.getInstance());
     this.express.use('/api/v1/user', UserRouter.getInstance());
+    this.express.use('/api/v1/video', VideoRouer.getInstance());
 
     // Always at last
     this.express.use('*', router);

@@ -34,6 +34,11 @@ export class VideoDao {
     this.grid = DatabaseManager.getGridFsBucket();
   }
 
+  public getVideoList() {
+    let stream = this.grid.find();
+    return stream.toArray();
+  }
+
   public saveVideo(file: Express.Multer.File) {
     let fileNameToSave = file.fieldname ? file.fieldname : file.originalname;
     let gfsWriteStream = this.getWriteStream(file, fileNameToSave);
@@ -64,7 +69,7 @@ export class VideoDao {
     };
     return options;
   }
-
+  
   private getWriteStream(
     file: Express.Multer.File,
     fileNameToSave: string
@@ -96,11 +101,6 @@ export class VideoDao {
         else resolve(true);
       });
     });
-  }
-
-  private readStream(stream: GridFSBucketReadStream) {
-    console.log('starting to read');
-    return stream;
   }
 
   // private getReadStream(_id: ObjectID) {

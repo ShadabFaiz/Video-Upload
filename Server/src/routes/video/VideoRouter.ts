@@ -1,50 +1,43 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { createWriteStream } from 'fs';
 
-import { UserCtrl } from '../../controller/user/UserCtrl';
+import { VidoeController } from '../../controller/video/VideoController';
 
-export class UserRouter {
+export class VideoRouer {
   private static router: Router;
 
   public static getInstance(): Router {
-    if (!UserRouter.router) {
-      let ur = new UserRouter();
+    if (!VideoRouer.router) {
+      let ur = new VideoRouer();
     }
-    return UserRouter.router;
+    return VideoRouer.router;
   }
 
   constructor() {
-    UserRouter.router = Router();
+    VideoRouer.router = Router();
     this.initialize();
   }
 
-  public getAllUsers = (req: Request, res: Response, next: NextFunction) => {
-    let ctrl = UserCtrl.getInstance();
+  public getVidoeList = (req: Request, res: Response, next: NextFunction) => {
+    let ctrl = VidoeController.getInstance();
     ctrl
-      .getAllUsers()
-      .then(users => res.send(users))
-      .catch(err => this.handleError(err, res));
-  }
-
-  public createUser = (req: Request, res: Response, next: NextFunction) => {
-    let ctrl = UserCtrl.getInstance();
-    ctrl
-      .createUser(req.body.user)
-      .then(result => res.send({ message: 'Account created successfully.' }))
+      .getVidoeList()
+      .then(list => {
+        console.log('SEnding list');
+        res.send(list);
+      })
       .catch(err => this.handleError(err, res));
   }
 
   public saveVideo = (req: Request, res: Response, next: NextFunction) => {
-    let ctrl = UserCtrl.getInstance();
-    // console.log(req.files);
+    let ctrl = VidoeController.getInstance();
     ctrl.saveVideo(req.files).then(status => res.send({ status }));
   }
 
   public getVideo = (req: Request, res: Response, next: NextFunction) => {
-    let ctrl = UserCtrl.getInstance();
+    let ctrl = VidoeController.getInstance();
     res.contentType('image/jpeg');
     ctrl.getVideo(req.params['objectId']).then(result => {
-      // this.writeToDisk(result);
       result.pipe(res);
       result.on('end', () => res.end());
       result.on('close', () => console.log('closing'));
@@ -78,13 +71,14 @@ export class UserRouter {
    * endpoints.
    */
   initialize() {
-    UserRouter.router.get(
-      '/getall',
+    VideoRouer.router.get(
+      '/all',
       // passport.authenticate('jwt', { session: false }),
       this.logRequest,
-      this.getAllUsers
+      this.getVidoeList
     );
 
-    UserRouter.router.post('/create', this.createUser);
+    VideoRouer.router.post('/save', this.saveVideo);
+    VideoRouer.router.get('/video/:objectId', this.getVideo);
   }
 }
