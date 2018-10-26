@@ -1,0 +1,28 @@
+p {
+  width: 500px;
+  transition-property: all;
+  transition-duration: 1s;
+  font-size: 0.8rem;
+  margin: 1% 1%;
+  cursor: pointer;
+  animation: left_to_right 2s 1;
+  /* animation-delay: 1s; */
+  /* animation-fill-mode: forwards; */
+}
+
+p:hover {
+  transform: scale3d(1.1, 1.1, 1.1) translate3d(10%, 0, 0);
+  /* transform:  */
+}
+
+@keyframes left_to_right {
+  0% {
+    transform: translate3d(-20%, 0, 0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}

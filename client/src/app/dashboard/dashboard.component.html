@@ -1,0 +1,15 @@
+<div class="flex-container">
+  <app-sidebar [videoList]="videoList"></app-sidebar>
+
+
+  <section>
+    <form [formGroup]="form" (ngSubmit)="uploadFile($event)" (change)="onChange($event)">
+      <p>This is a Form</p>
+      <label>
+        Upload Your file..
+        <input type="file" formControlName="fileControl" [hidden]="true">
+      </label>
+      <input type="submit" value="Upload">
+    </form>
+  </section>
+</div>

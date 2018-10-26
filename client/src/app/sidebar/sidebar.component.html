@@ -1,0 +1,6 @@
+<p *ngFor="let file of videoList">
+  <!-- {{file | json}} -->
+  <span>File Name: {{file.filename}}</span><br>
+  <span>Size: {{file.length}} MB</span><br>
+  <span>Type: {{file.contentType}}</span>
+</p>

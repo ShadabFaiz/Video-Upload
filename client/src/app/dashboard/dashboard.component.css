@@ -1,0 +1,43 @@
+.flex-container {
+  display: flex;
+  /* justify-content: center; */
+  width: 100%;
+}
+
+app-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  width: 40%;
+  /* background-color: #9acd32; */
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+section {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="file"] {
+  background-color: red;
+}
+
+section > form {
+  animation: bottom_to_top 2s 1;
+}
+
+@keyframes bottom_to_top {
+  0% {
+    transform: translate3d(0%, -150%, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0%, 0%, 0%);
+    opacity: 1;
+  }
+}
