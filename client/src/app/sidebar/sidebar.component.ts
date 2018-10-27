@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { VidoeFile } from 'src/Entities/VideoList';
 
 @Component({
@@ -10,7 +10,14 @@ export class SidebarComponent implements OnInit {
   @Input()
   videoList: VidoeFile[];
 
+  @Output()
+  videoClick = new EventEmitter<number>();
+
   constructor() {}
 
   ngOnInit() {}
+
+  onClick(videoId: number) {
+    this.videoClick.emit(videoId);
+  }
 }

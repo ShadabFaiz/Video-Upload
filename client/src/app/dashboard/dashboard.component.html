@@ -1,15 +1,23 @@
 <div class="flex-container">
-  <app-sidebar [videoList]="videoList"></app-sidebar>
+  <app-sidebar [videoList]="videoList" (videoClick)="createVideoUrl($event)"></app-sidebar>
 
 
   <section>
-    <form [formGroup]="form" (ngSubmit)="uploadFile($event)" (change)="onChange($event)">
-      <p>This is a Form</p>
+    <video *ngIf="currentlyPlaying" controls autoplay>
+      <source [src]="currentlyPlaying.url" (error)="errored($event)">
+    </video>
+    <p *ngIf="currentlyPlaying">{{currentlyPlaying.fileName}}</p>
+    {{videoUnsupportError}}
+    <form [formGroup]="form" (change)="onChange($event)">
       <label>
-        Upload Your file..
+        {{uploadFileName || 'Upload New Video here..'}}
         <input type="file" formControlName="fileControl" [hidden]="true">
       </label>
       <input type="submit" value="Upload">
     </form>
+    <p class="uploadMessage" [ngClass]="{uploadFailed: uploadFailureMessage ,success: uploadSuccessMessage, progress: uploadProgressMessage}">
+      {{uploadFailureMessage || uploadSuccessMessage || uploadProgressMessage}}</p>
   </section>
+
+
 </div>

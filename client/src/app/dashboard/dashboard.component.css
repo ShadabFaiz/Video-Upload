@@ -4,14 +4,31 @@
   width: 100%;
 }
 
+video {
+  width: 400px;
+  margin: 2%;
+  animation: top_to_bottom 1s 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes top_to_bottom {
+  0% {
+    transform: translate3d(0, -10%, 0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
 app-sidebar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   width: 40%;
-  /* background-color: #9acd32; */
-  height: 100vh;
+  height: 60vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -19,6 +36,8 @@ app-sidebar {
 section {
   width: 50%;
   display: flex;
+  /* background-color: green; */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -27,8 +46,28 @@ input[type="file"] {
   background-color: red;
 }
 
+input[type="submit"] {
+  visibility: hidden;
+}
+
+label {
+  border-radius: 5px;
+  background-color: #0b7d79;
+  padding: 10% 1%;
+  color: white;
+  cursor: pointer;
+  transition-property: all;
+  transition-duration: 5s;
+  display: block;
+  margin: 4% auto;
+  width: 70%;
+  text-align: center;
+}
+
 section > form {
+  width: 40%;
   animation: bottom_to_top 2s 1;
+  animation-fill-mode: forwards;
 }
 
 @keyframes bottom_to_top {
@@ -40,4 +79,24 @@ section > form {
     transform: translate3d(0%, 0%, 0%);
     opacity: 1;
   }
+}
+
+.uploadMessage {
+  border-radius: 5px;
+  padding: 0.9% 2%;
+  margin: 2%;
+}
+
+.uploadFailed {
+  background-color: rgb(182, 0, 0);
+  color: white;
+}
+
+.success {
+  background-color: green;
+  color: white;
+}
+
+.progress {
+  background-color: yellow;
 }

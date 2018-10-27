@@ -8,10 +8,7 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
-const appRoute: Routes = [
-  { path: '', component: AppComponent },
-  { path: 'dashboard', component: DashboardComponent }
-];
+const appRoute: Routes = [{ path: '', component: DashboardComponent }];
 
 @NgModule({
   declarations: [AppComponent, DashboardComponent, SidebarComponent],

@@ -1,0 +1,14 @@
+header {
+  background-color: #0000005d;
+  width: 100%;
+  position: sticky;
+  top: 0%;
+  z-index: 1;
+}
+h1 {
+  /* margin: 5% auto; */
+  padding: 4%;
+  display: block;
+  text-align: center;
+  color: white;
+}
