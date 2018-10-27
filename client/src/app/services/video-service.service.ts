@@ -50,7 +50,7 @@ export class VideoServiceService {
     return {
       filename: received.filename,
       contentType: received.contentType,
-      length: +Number(received.length / (1024 * 1024)).toPrecision(6),
+      length: +Number(received.length / (1024 * 1024)).toPrecision(4),
       _id: received._id
     };
   }

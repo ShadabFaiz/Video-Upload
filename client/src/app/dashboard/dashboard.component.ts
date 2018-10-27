@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VidoeFile } from 'src/Entities/VideoList';
+import { environment } from 'src/environments/environment';
 
 import { VideoServiceService } from '../services/video-service.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -55,15 +55,21 @@ export class DashboardComponent implements OnInit {
   onChange(event) {
     this.detectChange();
     if (this.form.valid) {
+      let formData: FormData;
       this.resetMessages();
-      const formData = this.createFormData(event);
-      this._videoService
-        .upload(formData)
-        .subscribe(
-          res => this.onProgress(res),
-          err => this.onUploadError(err),
-          () => this.onComplete()
-        );
+      try {
+        formData = this.createFormData(event);
+        this._videoService
+          .upload(formData)
+          .subscribe(
+            res => this.onProgress(res),
+            err => this.onUploadError(err),
+            () => this.onComplete()
+          );
+      } catch (error) {
+        this.uploadFailureMessage = error.message;
+        this.detectChange();
+      }
     }
   }
 
@@ -86,16 +92,25 @@ export class DashboardComponent implements OnInit {
   }
 
   getVideoUrl() {
-    console.log(this.currentPlayingVideoURL);
     return this.currentPlayingVideoURL ? this.currentPlayingVideoURL : null;
   }
 
   private createFormData(event) {
     const files: FileList = event.target.files;
-    const formData: FormData = new FormData();
-    formData.append(files[0].name, files[0], files[0].name);
-    this.setLabel(files[0].name);
-    return formData;
+    if (this.isFileSizeValid(files[0])) {
+      const formData: FormData = new FormData();
+      formData.append(files[0].name, files[0], files[0].name);
+      this.setLabel(files[0].name);
+      return formData;
+    } else {
+      throw new Error(
+        'Upload Failed. File Size cannot be greater than 100 MB.'
+      );
+    }
+  }
+
+  private isFileSizeValid(file: File) {
+    return file.size / (1024 * 1024) > 100 ? false : true;
   }
 
   private setLabel(fileName: string) {
