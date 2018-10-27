@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
   onChange(event) {
     this.detectChange();
     if (this.form.valid) {
+      this.resetMessages();
       const formData = this.createFormData(event);
       this._videoService
         .upload(formData)
