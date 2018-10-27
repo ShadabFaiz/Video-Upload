@@ -40,7 +40,19 @@ const listening = () => {
   console.log(`Server started at port: ${addr.port}`);
 };
 
+const onClosing = reason => {
+  console.log(`Process stopped: \n ${JSON.stringify(reason)}`);
+  process.exit(1);
+};
+
+const onException = exception => {
+  console.log(exception);
+  process.exit(1);
+};
+
 const server = http.createServer(App);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', listening);
+server.on('close', onClosing);
+server.on('uncaughtException', onException);

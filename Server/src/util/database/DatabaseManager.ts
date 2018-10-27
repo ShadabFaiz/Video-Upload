@@ -46,14 +46,6 @@ export class DatabaseManager {
 
   private static createCollections(database: Db) {
     DatabaseManager.createUserCollection(database);
-    // DatabaseManager.createVideoCollection(database);
-    // DatabaseManager.insertDefaultVideoData(database);
-  }
-
-  private static insertDefaultVideoData(database: Db) {
-    database
-      .collection(DatabaseManager.videoCollectionName)
-      .insertOne(DatabaseManager.defaultVideoData);
   }
 
   private static ListAllCollections(database: Db) {
@@ -65,13 +57,6 @@ export class DatabaseManager {
 
   private static createUserCollection(database: Db) {
     database.createCollection('User', DatabaseManager.UserCollectionOptions);
-  }
-
-  private static createVideoCollection(database: Db) {
-    database.createCollection(
-      DatabaseManager.videoCollectionName,
-      DatabaseManager.UserCollectionOptions
-    );
   }
 
   public getDatabase(): Db {
