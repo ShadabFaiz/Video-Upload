@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VidoeFile } from 'src/Entities/VideoList';
-import { environment } from 'src/environments/environment.prod';
 
 import { VideoServiceService } from '../services/video-service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',

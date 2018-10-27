@@ -48,7 +48,7 @@ app-sidebar {
     display: block;
     width: 100%;
     /* transform: translate3d(-80%, 0, 0); */
-    height: 50vh;
+    height: 46vh;
   }
 
   section {
@@ -56,7 +56,7 @@ app-sidebar {
   }
 
   .flex-container {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 }
 
