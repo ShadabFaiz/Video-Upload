@@ -7,17 +7,15 @@ export class DatabaseManager {
   private static readonly OPTIONS: MongoClientOptions = {
     useNewUrlParser: true
   };
-  private static readonly UserCollectionOptions: CollectionCreateOptions = {
-    autoIndexId: true
-  };
+  private static readonly UserCollectionOptions: CollectionCreateOptions = {};
 
   private static gridFsBusket: GridFSBucket;
 
-  private static videoCollectionName = "Videos";
+  private static videoCollectionName = 'Videos';
 
   private static defaultVideoData = {
-    Name: "Default_Video",
-    size: "3MB"
+    Name: 'Default_Video',
+    size: '3MB'
   };
 
   public static connect() {
@@ -43,13 +41,13 @@ export class DatabaseManager {
   }
 
   private static setupDatabaseListener(dbClient: MongoClient) {
-    dbClient.on("close", DatabaseManager.closeDatabaseConnection);
+    dbClient.on('close', DatabaseManager.closeDatabaseConnection);
   }
 
   private static createCollections(database: Db) {
     DatabaseManager.createUserCollection(database);
-    DatabaseManager.createVideoCollection(database);
-    DatabaseManager.insertDefaultVideoData(database);
+    // DatabaseManager.createVideoCollection(database);
+    // DatabaseManager.insertDefaultVideoData(database);
   }
 
   private static insertDefaultVideoData(database: Db) {
@@ -66,7 +64,7 @@ export class DatabaseManager {
   }
 
   private static createUserCollection(database: Db) {
-    database.createCollection("User", DatabaseManager.UserCollectionOptions);
+    database.createCollection('User', DatabaseManager.UserCollectionOptions);
   }
 
   private static createVideoCollection(database: Db) {
@@ -81,7 +79,7 @@ export class DatabaseManager {
   }
 
   private static closeDatabaseConnection(...args: any[]) {
-    console.log("Closing database connection");
+    console.log('Closing database connection');
   }
 
   public static getGridFsBucket() {

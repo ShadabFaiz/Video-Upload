@@ -37,7 +37,7 @@ const onError = (error: NodeJS.ErrnoException) => {
 const listening = () => {
   let addr = server.address();
   let bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+  console.log(`Server started at port: ${addr.port}`);
 };
 
 const server = http.createServer(App);

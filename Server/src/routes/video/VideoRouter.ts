@@ -23,7 +23,7 @@ export class VideoRouer {
     ctrl
       .getVidoeList()
       .then(list => {
-        console.log('SEnding list');
+        console.log('Sending list');
         res.send(list);
       })
       .catch(err => this.handleError(err, res));
@@ -31,16 +31,17 @@ export class VideoRouer {
 
   public saveVideo = (req: Request, res: Response, next: NextFunction) => {
     let ctrl = VidoeController.getInstance();
-    ctrl.saveVideo(req.files).then(status => res.send({ status }));
+    ctrl.saveVideo(req.files).then(file => {
+      res.send({ file });
+    });
   }
 
   public getVideo = (req: Request, res: Response, next: NextFunction) => {
     let ctrl = VidoeController.getInstance();
-    res.contentType('image/jpeg');
     ctrl.getVideo(req.params['objectId']).then(result => {
-      result.pipe(res);
-      result.on('end', () => res.end());
-      result.on('close', () => console.log('closing'));
+      // res.contentType(result[1].contentType);
+      result[0].pipe(res);
+      result[0].on('end', () => res.end());
     });
   }
 
@@ -79,6 +80,6 @@ export class VideoRouer {
     );
 
     VideoRouer.router.post('/save', this.saveVideo);
-    VideoRouer.router.get('/video/:objectId', this.getVideo);
+    VideoRouer.router.get('/:objectId', this.getVideo);
   }
 }

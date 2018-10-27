@@ -49,9 +49,16 @@ export class VideoDao {
   }
 
   public async getVideo(objectId: ObjectId): Promise<any> {
-    // let gfsReadStream = this.getReadStream(objectId);
     let fs = DatabaseManager.getGridFsBucket();
     return Promise.resolve(fs.openDownloadStream(new ObjectID(objectId)));
+  }
+
+  public getVideoDetails(objectId: ObjectId) {
+    return this.grid
+      .find({ _id: new ObjectId(objectId) })
+      .limit(1)
+      .toArray()
+      .then(res => res[0]);
   }
 
   public getDefaultVideo() {
@@ -69,7 +76,7 @@ export class VideoDao {
     };
     return options;
   }
-  
+
   private getWriteStream(
     file: Express.Multer.File,
     fileNameToSave: string
@@ -84,30 +91,14 @@ export class VideoDao {
     gfsWriteStream: GridFSBucketWriteStream,
     data: Buffer
   ): Promise<boolean> {
-    // let readable = new Readable();
-    // readable.push(data);
-    // readable.pipe(gfsWriteStream);
-
     gfsWriteStream.write(data);
-    // let temp = createReadStream(
-    //   '/home/Faiz/Jessica Jones S01E01 720p-[Nightsdl.Com].mkv'
-    // );
-    // temp.pipe(gfsWriteStream);
     return new Promise((resolve, reject) => {
       return gfsWriteStream.end((err, res) => {
-        // if (err) console.error('Error while write to datbase');
-        // else console.log(`No Error while write:\n ${JSON.stringify(res)}`);
         if (err) reject(err);
-        else resolve(true);
+        else resolve(res);
       });
     });
   }
-
-  // private getReadStream(_id: ObjectID) {
-  //   let stream = this.grid.openDownloadStream(_id);
-  //   this.addGridListeners(stream);
-  //   return stream;
-  // }
 
   private addGridListeners(
     stream: GridFSBucketWriteStream | GridFSBucketReadStream

@@ -32,6 +32,6 @@ export class VideoService {
 
   public getVideo(_id: ObjectId) {
     let dao = VideoDao.getInstance();
-    return dao.getVideo(_id);
+    return Promise.all([dao.getVideo(_id), dao.getVideoDetails(_id)]);
   }
 }
