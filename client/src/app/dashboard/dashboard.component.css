@@ -27,14 +27,40 @@ app-sidebar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
   height: 60vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
+@media (min-width: 769px) {
+  app-sidebar {
+    width: 40%;
+  }
+
+  section {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  app-sidebar {
+    /* background-color: red; */
+    display: block;
+    width: 100%;
+    /* transform: translate3d(-80%, 0, 0); */
+    height: 50vh;
+  }
+
+  section {
+    width: 100%;
+  }
+
+  .flex-container {
+    flex-direction: column;
+  }
+}
+
 section {
-  width: 50%;
   display: flex;
   /* background-color: green; */
   flex-direction: column;
