@@ -9,6 +9,7 @@ import { config } from '../config';
 import { DatabaseManager } from './util/database/DatabaseManager';
 import * as multer from 'multer';
 import { VideoRouer } from './routes/video/VideoRouter';
+import * as path from 'path';
 // import { AuthenticationCtrl } from './controller/authentication/AuthenticationCtrl';
 
 let extractJWT = passportjwt.ExtractJwt;
@@ -34,25 +35,33 @@ class App {
 
   // Configure Express middleware.
   private middleware(): void {
-    // this.express.use('/app', express.static(path.resolve(__dirname, '../../client/app')));
-    // this.express.use('/assets', express.static(path.resolve(__dirname, '../../client/assets')));
-    // tslint:disable-next-line:max-line-length
-    // this.express.use('/environments', express.static(path.resolve(__dirname, '../../client/environments')));
-    // this.express.use(
-    // 	express.static(path.resolve(__dirname, '../../client/dist'))
-    // );
-    // tslint:disable-next-line:max-line-length
-    // this.express.use('/node_modules', express.static(path.resolve(__dirname, '../../../node_modules')));
+    // Angular File
+    this.express.use(
+      express.static(path.resolve(__dirname, '../../client/dist/client'))
+    );
+    this.express.use(
+      '/assets',
+      express.static(path.resolve(__dirname, '../../client/src/assets/'))
+    );
+    this.express.use(
+      '/environments',
+      express.static(path.resolve(__dirname, '../../client/environments/'))
+    );
+
+    this.express.use(
+      '/node_modules',
+      express.static(path.resolve(__dirname, '../../client/node_modules/'))
+    );
+
+    // this.express.use('/api', next());
 
     this.express.use(expressValidator());
     let mult = multer();
     this.express.use(mult.any());
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
-    // this.express.use(AuthenticationCtrl.getInstance().initialize());
     this.express.use((req, res, next) => {
       // Website you wish to allow to connect
-      // res.setHeader('Access-Control-Allow-Origin', 'https://mapmycareer.org');
       res.setHeader('Access-Control-Allow-Origin', '*');
 
       // Request methods you wish to allow
@@ -75,9 +84,10 @@ class App {
       next();
     });
 
-    console.log(process.env.API_BASE);
-    // this.express.all('api/v1/' + '*', this.authenticate);
-    // createConnection();
+    // Routing to Angular.
+    this.express.get('', (req, res) => {
+      res.sendfile(path.join(__dirname, '../../client/dist/client/index.html'));
+    });
   }
 
   private handleAuthenticationFailure(info: any, res: Response) {
@@ -112,7 +122,7 @@ class App {
     this.express.use('/api/v1/video', VideoRouer.getInstance());
 
     // Always at last
-    this.express.use('*', router);
+    // this.express.use('*', router);
   }
 }
 
