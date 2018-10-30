@@ -86,7 +86,7 @@ class App {
 
     // Routing to Angular.
     this.express.get('', (req, res) => {
-      res.sendfile(path.join(__dirname, '../../client/dist/client/index.html'));
+      res.sendFile(path.join(__dirname, '../../client/dist/client/index.html'));
     });
   }
 
