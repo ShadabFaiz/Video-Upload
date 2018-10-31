@@ -1,6 +1,7 @@
 export interface VidoeFile {
-  filename: string;
+  fileName: string;
   contentType: string;
   length: number;
   _id: string;
+  url: string;
 }

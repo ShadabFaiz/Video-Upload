@@ -1,5 +1,6 @@
 import { ObjectId } from 'bson';
 
+import { AWSService } from '../../service/AWS/AWSService';
 import { VideoService } from '../../service/video/VideoService';
 
 export class VidoeController {
@@ -21,15 +22,14 @@ export class VidoeController {
     return service.getVideo(_id);
   }
 
-  public saveVideo(
-    files:
-      | Express.Multer.File[]
-      | {
-          [fieldname: string]: Express.Multer.File[];
-        }
-  ) {
+  public async saveVideo(file: Express.Multer.File) {
+    let savedVideo = await this.saveVideoToAWS(file);
     let service = VideoService.getInstance();
-    let file: Express.Multer.File = files[0];
-    return service.saveVideo(file);
+    return service.saveVideoData(file, savedVideo);
+  }
+
+  private saveVideoToAWS(file: Express.Multer.File) {
+    let awsService = AWSService.getInstance();
+    return awsService.saveFile(file);
   }
 }

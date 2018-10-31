@@ -27,7 +27,7 @@ export class VideoServiceService {
   }
 
   public addNewVideo(newVideo: VidoeFile) {
-    this.videoList.next([...this.videoList.getValue(), newVideo]);
+    this.videoList.next([...this.videoList.getValue(), this.mapFile(newVideo)]);
   }
 
   public getVideo(videoId: number) {
@@ -37,21 +37,23 @@ export class VideoServiceService {
   private fetchList() {
     this._http
       .get<VidoeFile[]>(`${environment.apiDomain}/video/all`)
-      .pipe(map(FileList => this.mapFileList(FileList)))
+      .pipe(map(list => this.mapFileList(list)))
       .subscribe(list => this.videoList.next(list));
   }
 
-  private mapFileList(recieved: VidoeFile[]) {
-    const temp = recieved.map(this.mapFile);
+  private mapFileList(list: VidoeFile[]) {
+    console.log(list);
+    const temp = list.map(this.mapFile);
     return temp;
   }
 
-  private mapFile(received: VidoeFile) {
+  private mapFile(received) {
     return {
-      filename: received.filename,
+      fileName: received.fileName,
       contentType: received.contentType,
-      length: +Number(received.length / (1024 * 1024)).toPrecision(4),
-      _id: received._id
+      length: +Number(received.size / (1024 * 1024)).toPrecision(4),
+      _id: received._id,
+      url: received.Location
     };
   }
 

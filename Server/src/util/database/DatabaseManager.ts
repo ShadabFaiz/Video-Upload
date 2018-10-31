@@ -36,6 +36,18 @@ export class DatabaseManager {
       .catch(err => console.log(err));
   }
 
+  public getDatabase(): Db {
+    return DatabaseManager.database;
+  }
+
+  public static getGridFsBucket() {
+    return this.gridFsBusket;
+  }
+
+  private static closeDatabaseConnection(...args: any[]) {
+    console.log('Closing database connection');
+  }
+
   private static setUpGridFs(database: Db) {
     DatabaseManager.gridFsBusket = new GridFSBucket(database);
   }
@@ -58,24 +70,4 @@ export class DatabaseManager {
   private static createUserCollection(database: Db) {
     database.createCollection('User', DatabaseManager.UserCollectionOptions);
   }
-
-  public getDatabase(): Db {
-    return DatabaseManager.database;
-  }
-
-  private static closeDatabaseConnection(...args: any[]) {
-    console.log('Closing database connection');
-  }
-
-  public static getGridFsBucket() {
-    return this.gridFsBusket;
-  }
-
-  // public static getGridFs2() {
-  //   console.log('creating gfs');
-  //   console.log(this.database);
-  //   let stream = gfs(this.database, MongoClient);
-  //   console.log('gfs');
-  //   return stream;
-  // }
 }

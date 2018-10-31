@@ -2,6 +2,8 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { createWriteStream } from 'fs';
 
 import { VidoeController } from '../../controller/video/VideoController';
+import { VideoDao } from '../../dao/media/video/VideoDao';
+import { AWSService } from '../../service/AWS/AWSService';
 
 export class VideoRouer {
   private static router: Router;
@@ -19,34 +21,49 @@ export class VideoRouer {
   }
 
   public getVidoeList = (req: Request, res: Response, next: NextFunction) => {
-    let ctrl = VidoeController.getInstance();
-    ctrl
-      .getVidoeList()
-      .then(list => {
-        console.log('Sending list');
-        res.send(list);
-      })
+    let dao = VideoDao.getInstance();
+    dao
+      .getVideoList()
+      .then(list => res.send(list))
       .catch(err => this.handleError(err, res));
   }
 
   public saveVideo = (req: Request, res: Response, next: NextFunction) => {
     let ctrl = VidoeController.getInstance();
-    ctrl.saveVideo(req.files).then(file => {
-      res.send({ file });
-    });
+    ctrl
+      .saveVideo(req.files[0])
+      .then(videoDetails => res.send({ file: videoDetails }))
+      .catch(err => this.handleError(err, res));
   }
 
   public getVideo = (req: Request, res: Response, next: NextFunction) => {
-    let ctrl = VidoeController.getInstance();
-    ctrl.getVideo(req.params['objectId']).then(result => {
-      // res.contentType(result[1].contentType);
-      result[0].pipe(res);
-      result[0].on('end', () => res.end());
-    });
+    let service = AWSService.getInstance();
+    service
+      .getFile('videouploader.bucket', req.params.fileName)
+      .then(file => {
+        res.contentType(file.ContentType);
+        res.send(file.$response.httpResponse);
+        res.on('close', () => console.log('close'));
+        res.on('finish', () => res.end());
+      })
+      .catch(err => this.handleError(err, res));
   }
 
+  public getAllBucket = (req: Request, res: Response, next: NextFunction) => {
+    let service = AWSService.getInstance();
+    service
+      .getAllBucket()
+      .then(bucket => res.send(bucket))
+      .catch(err => this.handleError(err, res));
+  }
+
+  // public createBucket = (req: Request, res: Response, next: NextFunction) => {
+  //   let aws = new AWSService();
+  // }
+
   private writeToDisk(result) {
-    let writeStream = createWriteStream('/home/Faiz/testing.jpeg');
+    let writeStream = createWriteStream('/home/Faiz/testing.pdf');
+    writeStream.on('close', () => console.log('writing to file closed'));
     result.pipe(writeStream);
   }
 
@@ -62,7 +79,6 @@ export class VideoRouer {
   }
 
   private handleError(err: { status: number; message: string }, res: Response) {
-    console.log(err);
     if (err.status) res.status(err.status).send({ message: err.message });
     else res.status(500).send({ message: 'Internal Serve Error' });
   }
@@ -80,6 +96,7 @@ export class VideoRouer {
     );
 
     VideoRouer.router.post('/save', this.saveVideo);
-    VideoRouer.router.get('/:objectId', this.getVideo);
+    VideoRouer.router.get('/bucket/all', this.getAllBucket);
+    VideoRouer.router.get('/:fileName', this.getVideo);
   }
 }
