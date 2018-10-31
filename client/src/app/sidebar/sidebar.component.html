@@ -1,5 +1,5 @@
 <p *ngFor="let file of videoList; let i = index" (click)="onClick(i)">
-  <span>File Name: {{file.filename}}</span><br>
+  <span>File Name: {{file.fileName}}</span><br>
   <span>Size: {{file.length}} MB</span><br>
   <span>Type: {{file.contentType}}</span>
 </p>

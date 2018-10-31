@@ -36,7 +36,7 @@ export class UserService {
 
   public saveVideo(file: Express.Multer.File) {
     let dao = VideoDao.getInstance();
-    return dao.saveVideo(file);
+    // return dao.saveVideo(file);
   }
 
   public getVideo(_id: ObjectId) {

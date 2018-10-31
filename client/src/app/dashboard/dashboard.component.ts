@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VidoeFile } from 'src/Entities/VideoList';
-import { environment } from 'src/environments/environment';
 
 import { VideoServiceService } from '../services/video-service.service';
 
@@ -77,10 +76,8 @@ export class DashboardComponent implements OnInit {
     this.resetCurrentVideo();
     const fileToPlay = this.videoList[videoId];
     this.currentlyPlaying = {
-      fileName: fileToPlay.filename,
-      url: this._domSantitizer.bypassSecurityTrustResourceUrl(
-        `${environment.apiDomain}/video/${fileToPlay._id}`
-      )
+      fileName: fileToPlay.fileName,
+      url: this._domSantitizer.bypassSecurityTrustResourceUrl(fileToPlay.url)
     };
     this.detectChange();
   }
@@ -110,7 +107,8 @@ export class DashboardComponent implements OnInit {
   }
 
   private isFileSizeValid(file: File) {
-    return file.size / (1024 * 1024) > 100 ? false : true;
+    // return file.size / (1024 * 1024) > 100 ? false : true;
+    return true;
   }
 
   private setLabel(fileName: string) {
@@ -125,6 +123,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private onProgress(res) {
+    console.log('progreess');
     this.uploadProgressMessage = `Upload in progress: ${res}%`;
     if (typeof res === 'object') {
       this.addNewFile(res.body.file);

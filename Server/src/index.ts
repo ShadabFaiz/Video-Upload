@@ -1,11 +1,15 @@
 import 'reflect-metadata';
 
 import * as debug from 'debug';
+import { config } from 'dotenv';
 import * as http from 'http';
 
 import App from './App';
 
 debug('ts-express:server');
+
+config();
+
 const normalizePort = (val: number | string): number | string | boolean => {
   // tslint:disable-next-line:no-shadowed-variable
   let port: number = typeof val === 'string' ? parseInt(val, 10) : val;

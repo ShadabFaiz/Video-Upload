@@ -3,6 +3,7 @@
 
 
   <section>
+
     <video *ngIf="currentlyPlaying" controls autoplay>
       <source [src]="currentlyPlaying.url" (error)="errored($event)">
     </video>

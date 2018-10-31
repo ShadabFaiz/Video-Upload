@@ -35,17 +35,14 @@ export class VideoDao {
   }
 
   public getVideoList() {
-    let stream = this.grid.find();
-    return stream.toArray();
+    return this.database
+      .collection('Videos')
+      .find({})
+      .toArray();
   }
 
-  public saveVideo(file: Express.Multer.File) {
-    let fileNameToSave = file.fieldname ? file.fieldname : file.originalname;
-    let gfsWriteStream = this.getWriteStream(file, fileNameToSave);
-    // console.log(file);
-    // console.log(gfsWriteStream);
-    // return Promise.resolve(true);
-    return this.writeVideoToDatabase(gfsWriteStream, file.buffer);
+  public saveVideo(videoDetails: {}) {
+    return this.database.collection('Videos').insertOne(videoDetails);
   }
 
   public async getVideo(objectId: ObjectId): Promise<any> {
@@ -112,7 +109,6 @@ export class VideoDao {
     stream.on('error', err => console.error(err));
     stream.on('finish', (...args) => {
       console.log('finsihed writing data');
-      console.log(args);
     });
   }
 }
